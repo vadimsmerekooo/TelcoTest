@@ -1,32 +1,32 @@
 {
   "format": 1,
   "restore": {
-    "E:\\НЕ  ОТКРЫВАТЬ!!!!!!\\Projects\\TelcoTestAsp\\TelcoTestAsp\\TelcoTestAsp.csproj": {}
+    "E:\\Для вадика\\TelcoTest\\TelcoTestAsp\\TelcoTestAsp.csproj": {}
   },
   "projects": {
-    "E:\\НЕ  ОТКРЫВАТЬ!!!!!!\\Projects\\TelcoTestAsp\\TelcoTestAsp\\TelcoTestAsp.csproj": {
+    "E:\\Для вадика\\TelcoTest\\TelcoTestAsp\\TelcoTestAsp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\НЕ  ОТКРЫВАТЬ!!!!!!\\Projects\\TelcoTestAsp\\TelcoTestAsp\\TelcoTestAsp.csproj",
+        "projectUniqueName": "E:\\Для вадика\\TelcoTest\\TelcoTestAsp\\TelcoTestAsp.csproj",
         "projectName": "TelcoTestAsp",
-        "projectPath": "E:\\НЕ  ОТКРЫВАТЬ!!!!!!\\Projects\\TelcoTestAsp\\TelcoTestAsp\\TelcoTestAsp.csproj",
-        "packagesPath": "C:\\Users\\Вадим\\.nuget\\packages\\",
-        "outputPath": "E:\\НЕ  ОТКРЫВАТЬ!!!!!!\\Projects\\TelcoTestAsp\\TelcoTestAsp\\obj\\",
+        "projectPath": "E:\\Для вадика\\TelcoTest\\TelcoTestAsp\\TelcoTestAsp.csproj",
+        "packagesPath": "C:\\Users\\t\\.nuget\\packages\\",
+        "outputPath": "E:\\Для вадика\\TelcoTest\\TelcoTestAsp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Вадим\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\t\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
-          "C:\\Program Files\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
