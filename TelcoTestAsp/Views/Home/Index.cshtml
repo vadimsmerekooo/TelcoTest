@@ -1,4 +1,4 @@
-﻿@model List<TelcoTestAsp.Models.Task>
+﻿@model IndexViewModel
 @{
     ViewData["Title"] = "Tasks Page";
 }
@@ -12,11 +12,11 @@
 </nav>
 <hr />
 
-@if (Model != null && Model.Count != 0)
+@if (Model != null && Model.Tasks.Count != 0)
 {
     <h2>Tasks</h2>
 
-    @foreach (TelcoTestAsp.Models.Task taskItem in Model)
+    @foreach (TelcoTestAsp.Models.Task taskItem in Model.Tasks)
     {
         <div class="alert @(taskItem.Status == TelcoTestAsp.Models.TaskStatus.Opened ? "alert-success" : "alert-danger")" role="alert">
             <div class="row">
@@ -68,6 +68,34 @@
             </p>
         </div>
     }
+    <nav>
+        <ul class="pagination justify-content-center">
+            @if (Model.PageViewModel.PageNumber != 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-action="Index" asp-route-page="1">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            }
+            @{
+                for (int i = 1; i < Model.PageViewModel.TotalPages + 1; i++)
+                {
+                    <li class="page-item @(Model.PageViewModel.PageNumber == i ? "active" : "")">
+                        <a class="page-link" asp-action="Index"asp-route-page="@i">@i</a>
+                    </li>
+                }
+            }
+            @if (Model.PageViewModel.PageNumber != Model.PageViewModel.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageViewModel.TotalPages)">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
 }
 else
 {
