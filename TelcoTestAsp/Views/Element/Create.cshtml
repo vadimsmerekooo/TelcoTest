@@ -1,0 +1,26 @@
+﻿@model TelcoTestAsp.Models.CreateElementViewModel
+@{
+    ViewData["Title"] = "Create element for task: " + Model.Task.Name;
+}
+
+<form method="post" asp-controller="Element" asp-action="Create">
+
+    <input style="display: none;" asp-for="TaskElement.TaskId" type="text" class="form-control" placeholder="name" required value="@Model.Task.Id">
+    <div class="mb-3">
+        <label asp-for="TaskElement.Name" class="form-label">Name</label>
+        <input asp-for="TaskElement.Name" type="text" class="form-control" placeholder="name" required>
+    </div>
+    <div class="mb-3">
+        <label asp-for="TaskElement.Description" class="form-label">Description</label>
+        <input asp-for="TaskElement.Description" type="text" class="form-control" placeholder="description" required />
+    </div>
+    <div class="mb-3">
+        <label asp-for="TaskElement.Value" class="form-label">Value</label>
+        <input asp-for="TaskElement.Value" type="text" class="form-control" placeholder="value" required />
+    </div>
+    <button class="btn btn-primary" type="submit">@ViewData["Title"]</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

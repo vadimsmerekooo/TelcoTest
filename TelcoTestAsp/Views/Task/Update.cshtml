@@ -1,0 +1,34 @@
+﻿@model TelcoTestAsp.Models.Task
+
+@{
+    ViewData["Title"] = "Update task: " + Model.Name;
+}
+
+<h3>Update task: @Model.Name</h3>
+<hr/>
+
+<form method="post" asp-controller="Task" asp-action="Update">
+    <input style="display: none;" asp-for="Id" type="text" value="@Model.Id">
+    <input style="display: none;" asp-for="Status" type="text" value="@Model.Status">
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Name</label>
+        <input asp-for="Name" type="text" class="form-control" placeholder="name" required value="@Model.Name">
+    </div>
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">Description</label>
+        <input asp-for="Description" type="text" class="form-control" placeholder="description" required value="@Model.Description"/>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Start_date" class="form-label">Date start</label>
+        <input asp-for="Start_date" type="date" class="form-control" value="@Model.Start_date.ToString("MM-dd-yyyy hh:mm tt")" required />
+    </div>
+    <div class="mb-3">
+        <label asp-for="End_date" class="form-label">Date end</label>
+        <input asp-for="End_date" type="date" class="form-control" value="@Model.End_date.ToString("MM-dd-yyyy hh:mm tt")" required />
+    </div>
+    <button class="btn btn-primary" type="submit">Update task</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,62 @@
+﻿@model TelcoTestAsp.Models.Task
+
+@{
+    ViewData["Title"] = "Task: " + Model.Name;
+}
+
+
+<div class="row">
+    <div class="col">
+        <h3>@Model.Name</h3>
+    </div>
+    <div class="col">
+        <h3>From: @Model.Start_date</h3>
+    </div>
+    <div class="col">
+        <h3>To: @Model.End_date</h3>
+    </div>
+    <div class="col">
+        <h3>Status: @Model.Status</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <a class="btn btn-outline-primary" asp-controller="Task" asp-action="Update" asp-route-idTask="@Model.Id"><i class="bi bi-pencil-square"></i> Change task</a>
+        <a class="btn btn-outline-danger" asp-controller="Task" asp-action="Delete" asp-route-idTask="@Model.Id"><i class="bi bi-trash"></i> Delete task</a>
+    </div>
+</div>
+<hr />
+<h2>Description:</h2>
+<h4>@Model.Description</h4>
+<hr />
+@if (Model.TaskElements is null && Model.TaskElements.Count == 0)
+{
+    <h4>List element task empty. <a asp-controller="Element" asp-action="Create" asp-route-idTask="@Model.Id">Create element fot task.</a></h4>
+}
+else
+{
+    <div class="row">
+        <div class="col">
+            <a class="btn btn-outline-success" asp-controller="Element" asp-action="Create" asp-route-idTask="@Model.Id"><i class="bi bi-clipboard-plus"></i> Create element for task</a>
+        </div>
+    </div>
+    <hr/>
+    @foreach (TaskElement taskElement in Model.TaskElements)
+    {
+        <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">@taskElement.Name</h4>
+            <p>
+                @taskElement.Description
+            </p>
+            <hr/>
+            <div class="row">
+                <div class="col">
+                    <a class="btn btn-outline-primary" asp-controller="Element" asp-action="Update" asp-route-idElement="@taskElement.Id"><i class="bi bi-pencil-square"></i> Change element</a>
+                    <a class="btn btn-outline-danger" asp-controller="Element" asp-action="Delete" asp-route-idElement="@taskElement.Id"><i class="bi bi-trash"></i> Delete element</a>
+                </div>
+            </div>
+            <hr/>
+            <p class="mb-0">Value: @taskElement.Value</p>
+        </div>
+    }
+}

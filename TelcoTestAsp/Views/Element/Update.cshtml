@@ -1,0 +1,26 @@
+﻿@model TelcoTestAsp.Models.TaskElement
+@{
+    ViewData["Title"] = "Update element";
+}
+
+<form method="post" asp-controller="Element" asp-action="Update">
+
+    <input style="display: none;" asp-for="TaskId" type="text" class="form-control" placeholder="name" required value="@Model.TaskId">
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Name</label>
+        <input asp-for="Name" type="text" class="form-control" placeholder="name" required>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">Description</label>
+        <input asp-for="Description" type="text" class="form-control" placeholder="description" required />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Value" class="form-label">Value</label>
+        <input asp-for="Value" type="text" class="form-control" placeholder="value" required />
+    </div>
+    <button class="btn btn-primary" type="submit">@ViewData["Title"]</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
