@@ -36,9 +36,13 @@
 else
 {
     <div class="row">
-        <div class="col">
+        <nav class="navbar navbar-light bg-light">
             <a class="btn btn-outline-success" asp-controller="Element" asp-action="Create" asp-route-idTask="@Model.Task.Id"><i class="bi bi-clipboard-plus"></i> Create element for task</a>
-        </div>
+            <form class="form-inline">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search element" aria-label="Search element">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </nav>
     </div>
     <hr />
     @foreach (TaskElement taskElement in Model.TaskElements)
