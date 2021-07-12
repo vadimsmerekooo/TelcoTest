@@ -1,8 +1,78 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model List<TelcoTestAsp.Models.Task>
+@{
+    ViewData["Title"] = "Tasks Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<nav class="navbar navbar-light bg-light">
+    <a class="btn btn-outline-success" asp-controller="Task" asp-action="Create"><i class="bi bi-clipboard-plus"></i> Create task</a>
+    <form class="form-inline">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+</nav>
+<hr />
+
+@if (Model != null && Model.Count != 0)
+{
+    <h2>Tasks</h2>
+
+    @foreach (TelcoTestAsp.Models.Task taskItem in Model)
+    {
+        <div class="alert @(taskItem.Status == TelcoTestAsp.Models.TaskStatus.Opened ? "alert-success" : "alert-danger")" role="alert">
+            <div class="row">
+                <div class="col">
+                    <h4 class="alert-heading">@taskItem.Name</h4>
+                </div>
+                <div class="col">
+                    <h4 class="float-right">@taskItem.Status</h4>
+                </div>
+            </div>
+            <hr />
+            <p>
+                @(taskItem.Description.Length > 120 ? taskItem.Description.Substring(0, 120) + "..." : taskItem.Description)
+            </p>
+            <hr />
+            <div class="row">
+                <div class="col">
+                    <a class="btn btn-outline-primary" asp-controller="Task" asp-action="TaskInfo" asp-route-idTask="@taskItem.Id"><i class="bi bi-arrow-right"></i> Task info</a>
+                    <a class="btn btn-outline-danger" asp-controller="Task" asp-action="Delete" asp-route-idTask="@taskItem.Id"><i class="bi bi-trash"></i> Delete task</a>
+                </div>
+            </div>
+            <hr />
+            Task elements. Count @taskItem.TaskElements.Count();
+            @foreach (TaskElement taskElement in taskItem.TaskElements.Take(3))
+            {
+                <div class="alert alert-info" role="alert">
+                    <div class="row text-center">
+                        <div class="col">
+                            <h5> @taskElement.Name </h5>
+                        </div>
+                        <div class="col">
+                            <h5>
+                                @(taskItem.Description.Length > 40 ? taskItem.Description.Substring(0, 40) + "..." : taskItem.Description)
+                            </h5>
+                        </div>
+                        <div class="col">
+                            <h5>@taskElement.Value</h5>
+                        </div>
+                    </div>
+                </div>
+            }
+            @if (taskItem.TaskElements.Count() > 3)
+            {
+                <a asp-controller="Task" asp-action="TaskInfo" asp-route-idTask="@taskItem.Id"><i class="bi bi-backspace-reverse"></i> More elements</a>
+            }
+            <hr>
+            <p class="mb-0">
+                Count task elements: @(taskItem.TaskElements.Count()). From @taskItem.Start_date.ToShortDateString() to @taskItem.End_date.ToShortDateString()
+            </p>
+        </div>
+    }
+}
+else
+{
+    <h3 class="text-center">Not tasks. <a asp-controller="Task" asp-action="Create">Add new Task.</a></h3>
+}
+
+
+
