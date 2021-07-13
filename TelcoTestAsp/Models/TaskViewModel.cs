@@ -7,5 +7,6 @@ namespace TelcoTestAsp.Models
         public Task Task { get; set; }
         public List<TaskElement> TaskElements { get; set; }
         public PageViewModel PageViewModel { get; set; }
+        public SearchModel SearchModel { get; set; }
     }
 }
