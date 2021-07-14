@@ -5,6 +5,7 @@
 
 <nav class="navbar navbar-light bg-light">
     <a class="btn btn-outline-success" asp-controller="Task" asp-action="Create"><i class="bi bi-clipboard-plus"></i> Create task</a>
+    <a class="btn btn-outline-success" asp-controller="Home" asp-action="GenerateExcelFile"><i class="bi bi-file-earmark-spreadsheet"></i> Generate excel file task</a>
     <form class="form-inline" asp-controller="Home" asp-action="Search" method="post">
         <input class="form-control mr-sm-2" asp-for="SearchModel.Query" type="search" placeholder="Search task" aria-label="Search task">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>

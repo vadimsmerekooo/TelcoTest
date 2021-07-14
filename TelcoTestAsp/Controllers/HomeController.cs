@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using TelcoTestAsp.Models;
+using TelcoTestAsp.Generate_file;
+using System.IO;
 
 namespace TelcoTestAsp.Controllers
 {
@@ -18,8 +20,19 @@ namespace TelcoTestAsp.Controllers
 
         public IActionResult Index(int page = 1)
         {
-            List<Task> tasks = _context.Tasks.Include(c => c.TaskElements).OrderBy(s => s.Status).ToList();
-            return View(GetIndexViewModel(page, tasks));
+            List<Task> tasks = _context.Tasks.Include(c => c.TaskElements).ToList();
+
+            foreach (Task taskItem in tasks)
+            {
+                if (taskItem.End_date < DateTime.Now.AddDays(1))
+                {
+                    taskItem.Status = TaskStatus.Closed;
+                    _context.Tasks.FirstOrDefault(task => task.Id == taskItem.Id).Status = TaskStatus.Closed;
+                }
+            }
+            _context.SaveChanges();
+
+            return View(GetIndexViewModel(page, tasks.OrderBy(d => d.End_date).OrderBy(s => s.Status).ToList()));
         }
 
         [HttpPost]
@@ -98,6 +111,21 @@ namespace TelcoTestAsp.Controllers
             };
 
             return viewModel;
+        }
+
+        public FileResult GenerateExcelFile()
+        {
+            string pathFileStructure = Path.GetFullPath("Generate file/templatefile/TemplateStructure.xml");
+            string pathFileTaskRow = Path.GetFullPath("Generate file/templatefile/TemplateRowTask.txt");
+            string pathFileTaskElementHeader = Path.GetFullPath("Generate file/templatefile/TemplateRowHeaderTaskElement.txt");
+            string pathFileTaskElementRow = Path.GetFullPath("Generate file/templatefile/TemplateRowTaskElement.txt");
+            TemplateFilesModel template = new TemplateFilesModel(pathFileStructure, pathFileTaskRow, pathFileTaskElementHeader, pathFileTaskElementRow);
+
+            List<Task> tasks = _context.Tasks.Include(c => c.TaskElements).ToList();
+
+            GenerateXlsx generate = new GenerateXlsx(template, tasks);
+
+            return File(generate.GenerateXlsxFile<byte[]>(), "application/force-download", "Telco_tasks_info.xls");
         }
 
 

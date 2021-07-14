@@ -50,7 +50,7 @@ namespace TelcoTestAsp.Controllers
                 }
                 if (String.IsNullOrWhiteSpace(searchTaskElementModel.Name))
                 {
-                    List<TaskElement> taskElements = task.TaskElements.Where(element => element.Value.Contains(searchTaskElementModel.Name)).ToList();
+                    List<TaskElement> taskElements = task.TaskElements.Where(element => element.Value.Contains(searchTaskElementModel.Value)).ToList();
                     task.TaskElements = taskElements;
                 }
                 if (String.IsNullOrWhiteSpace(searchTaskElementModel.Value))
