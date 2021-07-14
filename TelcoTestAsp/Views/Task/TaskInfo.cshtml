@@ -1,46 +1,73 @@
-﻿@model TelcoTestAsp.Models.Task
+﻿@model TelcoTestAsp.Models.TaskViewModel
 
 @{
-    ViewData["Title"] = "Task: " + Model.Name;
+    ViewData["Title"] = "Task: " + Model.Task.Name;
 }
 
 
 <div class="row">
     <div class="col">
-        <h3>@Model.Name</h3>
+        <h3>@Model.Task.Name</h3>
     </div>
     <div class="col">
-        <h3>From: @Model.Start_date.ToShortDateString()</h3>
+        <h3>From: @Model.Task.Start_date.ToShortDateString()</h3>
     </div>
     <div class="col">
-        <h3>To: @Model.End_date.ToShortDateString()</h3>
+        <h3>To: @Model.Task.End_date.ToShortDateString()</h3>
     </div>
     <div class="col">
-        <h3>Status: @Model.Status</h3>
+        <h3>Status: @Model.Task.Status</h3>
     </div>
 </div>
 <div class="row">
     <div class="col">
-        <a class="btn btn-outline-primary" asp-controller="Task" asp-action="Update" asp-route-idTask="@Model.Id"><i class="bi bi-pencil-square"></i> Change task</a>
-        <a class="btn btn-outline-danger" asp-controller="Task" asp-action="Delete" asp-route-idTask="@Model.Id"><i class="bi bi-trash"></i> Delete task</a>
+        <a class="btn btn-outline-primary" asp-controller="Task" asp-action="Update" asp-route-idTask="@Model.Task.Id"><i class="bi bi-pencil-square"></i> Change task</a>
+        <a class="btn btn-outline-danger" asp-controller="Task" asp-action="Delete" asp-route-idTask="@Model.Task.Id"><i class="bi bi-trash"></i> Delete task</a>
     </div>
 </div>
 <hr />
 <h2>Description:</h2>
-<h4>@Model.Description</h4>
+<h4>@Model.Task.Description</h4>
 <hr />
 @if (Model.TaskElements is null && Model.TaskElements.Count == 0)
 {
-    <h4>List element task empty. <a asp-controller="Element" asp-action="Create" asp-route-idTask="@Model.Id">Create element fot task.</a></h4>
+    <h4>List element task empty. <a asp-controller="Element" asp-action="Create" asp-route-idTask="@Model.Task.Id">Create element fot task.</a></h4>
 }
 else
 {
-    <div class="row">
-        <div class="col">
-            <a class="btn btn-outline-success" asp-controller="Element" asp-action="Create" asp-route-idTask="@Model.Id"><i class="bi bi-clipboard-plus"></i> Create element for task</a>
+    <nav class="navbar navbar-light bg-light">
+        <a class="btn btn-outline-success" asp-controller="Element" asp-action="Create" asp-route-idTask="@Model.Task.Id"><i class="bi bi-clipboard-plus"></i> Create element for task</a>
+        <form class="form-inline" asp-controller="Task" asp-action="Search" asp-route-idTask="@Model.Task.Id" method="post">
+            <input class="form-control mr-sm-2" asp-for="SearchModel.Query" type="search" placeholder="Search elements" aria-label="Search elements">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </nav>
+    <hr />
+    <h4>Search task of the parametrs</h4>
+    <form class="form-group" asp-controller="Task" asp-action="Search" asp-route-idTask="@Model.Task.Id" asp-route-isAdvancedSearch="@true">
+        <div class="row">
+            <div class="col">
+                <label class="col-sm-2 col-form-label">Name</label>
+                <div class="col-sm-10">
+                    <input asp-for="@(((TelcoTestAsp.Models.TaskElement)Model.SearchModel.FilterSearchElements).Name)" type="text" class="form-control" placeholder="name">
+                </div>
+            </div>
+            <div class="col">
+                <label class="col-sm-2 col-form-label">Value</label>
+                <div class="col-sm-10">
+                    <input asp-for="@(((TelcoTestAsp.Models.TaskElement)Model.SearchModel.FilterSearchElements).Value)" type="text" class="form-control" placeholder="value">
+                </div>
+            </div>
         </div>
-    </div>
-    <hr/>
+        <div class="row">
+            <div class="col">
+                <div class="col-sm-10">
+                    <button class="btn btn-outline-success" type="submit" style="margin-top: 30px;">Search elements</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <hr />
     @foreach (TaskElement taskElement in Model.TaskElements)
     {
         <div class="alert alert-info" role="alert">
@@ -48,15 +75,46 @@ else
             <p>
                 @taskElement.Description
             </p>
-            <hr/>
+            <hr />
             <div class="row">
                 <div class="col">
                     <a class="btn btn-outline-primary" asp-controller="Element" asp-action="Update" asp-route-idElement="@taskElement.Id"><i class="bi bi-pencil-square"></i> Change element</a>
                     <a class="btn btn-outline-danger" asp-controller="Element" asp-action="Delete" asp-route-idElement="@taskElement.Id"><i class="bi bi-trash"></i> Delete element</a>
                 </div>
             </div>
-            <hr/>
+            <hr />
             <p class="mb-0">Value: @taskElement.Value</p>
         </div>
+    }
+    @if (Model.TaskElements.Count() != 0)
+    {
+        <nav>
+            <ul class="pagination justify-content-center">
+                @if (Model.PageViewModel.PageNumber != 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Task" asp-action="TaskInfo" asp-route-idTask="@Model.Task.Id" asp-route-page="1">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                }
+                @{
+                    for (int i = 1; i < Model.PageViewModel.TotalPages + 1; i++)
+                    {
+                        <li class="page-item @(Model.PageViewModel.PageNumber == i ? "active" : "")">
+                            <a class="page-link" asp-controller="Task" asp-action="TaskInfo" asp-route-idTask="@Model.Task.Id" asp-route-page="@i">@i</a>
+                        </li>
+                    }
+                }
+                @if (Model.PageViewModel.PageNumber != Model.PageViewModel.TotalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Task" asp-action="TaskInfo" asp-route-idTask="@Model.Task.Id" asp-route-page="@(Model.PageViewModel.TotalPages)">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
     }
 }

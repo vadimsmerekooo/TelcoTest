@@ -1,31 +1,30 @@
-﻿@model IndexViewModel
+﻿@model SearchViewModel
 @{
     ViewData["Title"] = "Tasks Page";
 }
 
 <nav class="navbar navbar-light bg-light">
     <a class="btn btn-outline-success" asp-controller="Task" asp-action="Create"><i class="bi bi-clipboard-plus"></i> Create task</a>
-    <a class="btn btn-outline-primary" asp-controller="Home" asp-action="GenerateExcelFile"><i class="bi bi-file-earmark-spreadsheet"></i> Generate excel file task</a>
     <form class="form-inline" asp-controller="Home" asp-action="Search" method="post">
         <input class="form-control mr-sm-2" asp-for="SearchModel.Query" type="search" placeholder="Search task" aria-label="Search task">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
 </nav>
-<hr/>
+<hr />
 <h4>Search task of the parametrs</h4>
 <form class="form-group" asp-controller="Home" asp-action="Search" asp-route-isAdvancedSearch="@true">
     <div class="row">
         <div class="col">
             <label class="col-sm-2 col-form-label">Name</label>
             <div class="col-sm-10">
-                <input asp-for="@(((TelcoTestAsp.Models.Task)Model.SearchModel.FilterSearch).Name)" type="text" class="form-control" placeholder="name">
+                <input asp-for="@(((TelcoTestAsp.Models.Task)Model.SearchModel.FilterSearch).Name)" type="text" class="form-control" placeholder="name" value="@(Model.SearchModel.FilterSearch is null ? "" : Model.SearchModel.FilterSearch.Name)">
             </div>
         </div>
         <div class="col">
             <label class="col-sm-2 col-form-label">Status</label>
             <div class="col-sm-10">
-                <select class="form-select" aria-label="Select status" asp-for="@(((TelcoTestAsp.Models.Task)Model.SearchModel.FilterSearch).Status)">
-                    <option value="0" selected>Opened</option>
+                <select class="form-select" aria-label="Select status" asp-for="@(((TelcoTestAsp.Models.Task)Model.SearchModel.FilterSearch).Status)" value="@(Model.SearchModel.FilterSearch is null ? "Opened" : Model.SearchModel.FilterSearch.Status)">
+                    <option value="0">Opened</option>
                     <option value="1">Closed</option>
                 </select>
             </div>
@@ -35,31 +34,31 @@
         <div class="col">
             <label class="col-sm-2 col-form-label">From:</label>
             <div class="col-sm-10">
-                <input asp-for="@(((TelcoTestAsp.Models.Task)Model.SearchModel.FilterSearch).Start_date)" type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                <input asp-for="@(((TelcoTestAsp.Models.Task)Model.SearchModel.FilterSearch).Start_date)" type="date" class="form-control" value="@(Model.SearchModel.FilterSearch is null ? DateTime.Now.ToString("yyyy-MM-dd") : Model.SearchModel.FilterSearch.Start_date.ToString("yyyy-MM-dd"))" />
             </div>
         </div>
         <div class="col">
             <label class="col-sm-2 col-form-label">To:</label>
             <div class="col-sm-10">
-                <input asp-for="@(((TelcoTestAsp.Models.Task)Model.SearchModel.FilterSearch).End_date)" type="date" class="form-control" value="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" />
+                <input asp-for="@(((TelcoTestAsp.Models.Task)Model.SearchModel.FilterSearch).End_date)" type="date" class="form-control" value="@(Model.SearchModel.FilterSearch is null ? DateTime.Now.ToString("yyyy-MM-dd") : Model.SearchModel.FilterSearch.End_date.ToString("yyyy-MM-dd"))" />
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col">
             <div class="col-sm-10">
-                <button class="btn btn-outline-success" type="submit" style="margin-top: 30px;">Search tasks</button>
+                <button class="btn btn-outline-success" type="submit" style="margin-top: 30px;">Search</button>
             </div>
         </div>
     </div>
 </form>
 <hr />
 
-@if (Model != null && Model.Tasks.Count != 0)
+@if (Model != null && ((List<TelcoTestAsp.Models.Task>)Model.ViewModel).Count != 0)
 {
-    <h2>Tasks</h2>
+    <h2>Result search tasks</h2>
 
-    @foreach (TelcoTestAsp.Models.Task taskItem in Model.Tasks)
+    @foreach (TelcoTestAsp.Models.Task taskItem in (List<TelcoTestAsp.Models.Task>)Model.ViewModel)
     {
         <div class="alert @(taskItem.Status == TelcoTestAsp.Models.TaskStatus.Opened ? "alert-success" : "alert-danger")" role="alert">
             <div class="row">
@@ -82,7 +81,7 @@
                 </div>
             </div>
             <hr />
-            Task elements. Count @taskItem.TaskElements.Count();
+            Task elements. Count @taskItem.TaskElements.Count() ;
             @foreach (TaskElement taskElement in taskItem.TaskElements.Take(3))
             {
                 <div class="alert alert-info" role="alert">
@@ -111,39 +110,8 @@
             </p>
         </div>
     }
-    <nav>
-        <ul class="pagination justify-content-center">
-            @if (Model.PageViewModel.PageNumber != 1)
-            {
-                <li class="page-item">
-                    <a class="page-link" asp-action="Index" asp-route-page="1">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-            }
-            @{
-                for (int i = 1; i < Model.PageViewModel.TotalPages + 1; i++)
-                {
-                    <li class="page-item @(Model.PageViewModel.PageNumber == i ? "active" : "")">
-                        <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
-                    </li>
-                }
-            }
-            @if (Model.PageViewModel.PageNumber != Model.PageViewModel.TotalPages)
-            {
-                <li class="page-item">
-                    <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageViewModel.TotalPages)">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            }
-        </ul>
-    </nav>
 }
 else
 {
-    <h3 class="text-center">Not tasks. <a asp-controller="Task" asp-action="Create">Add new Task.</a></h3>
+    <h3 class="text-center">Not tasks of search @Model.SearchModel.Query;</h3>
 }
-
-
-

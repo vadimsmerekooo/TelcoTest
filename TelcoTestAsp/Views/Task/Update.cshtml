@@ -20,11 +20,11 @@
     </div>
     <div class="mb-3">
         <label asp-for="Start_date" class="form-label">Date start</label>
-        <input asp-for="Start_date" type="date" class="form-control" value="@Model.Start_date.ToString("MM-dd-yyyy hh:mm tt")" required />
+        <input asp-for="Start_date" type="date" class="form-control" value="@Model.Start_date.ToString("yyyy-MM-dd")" required />
     </div>
     <div class="mb-3">
         <label asp-for="End_date" class="form-label">Date end</label>
-        <input asp-for="End_date" type="date" class="form-control" value="@Model.End_date.ToString("MM-dd-yyyy hh:mm tt")" required />
+        <input asp-for="End_date" type="date" class="form-control" value="@Model.End_date.ToString("yyyy-MM-dd")" required />
     </div>
     <button class="btn btn-primary" type="submit">Update task</button>
 </form>
